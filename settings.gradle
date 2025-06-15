@@ -33,4 +33,5 @@ include 'rate-limiter'
 include 'feature-flag'
 include 'voting-system'
 include 'url-router'
+include 'snake-game'
 
