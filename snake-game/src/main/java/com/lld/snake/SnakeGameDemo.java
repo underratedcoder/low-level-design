@@ -12,7 +12,7 @@ public class SnakeGameDemo {
 
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("Enter move (WASD): ");
+            System.out.println("Enter move (ULDR): ");
             String input = scanner.nextLine().toUpperCase();
             switch (input) {
                 case "U" -> game.move(Direction.UP);
@@ -22,6 +22,7 @@ public class SnakeGameDemo {
                 case "" -> game.move(null);
                 default -> System.out.println("Invalid input");
             }
+            game.displayBoard();
         }
     }
 }

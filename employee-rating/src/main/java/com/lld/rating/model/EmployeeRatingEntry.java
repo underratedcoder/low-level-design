@@ -8,5 +8,4 @@ import lombok.Getter;
 public class EmployeeRatingEntry {
     private final String employeeId;
     private final double averageRating;
-    //private final LocalDate ratingDate;
 }

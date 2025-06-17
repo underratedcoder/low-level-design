@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 public class RateLimiterDemo {
     public static void main(String[] args) throws InterruptedException {
         IRateLimiter limiter = RateLimiterFactory.createBucketRateLimiter(
-                RateLimiterType.LEAKY_BUCKET, 5, 5, TimeUnit.SECONDS, -1, 3
+                RateLimiterType.LEAKY_BUCKET, 5, TimeUnit.SECONDS, 5, -1, 3
         );
 
         RequestDispatcher dispatcher = new RequestDispatcher(limiter);

@@ -31,22 +31,22 @@ public class TokenBucketRateLimiter extends RateLimiter implements IRateLimiter 
         scheduler.scheduleAtFixedRate(this::refillAll, 0, timeWindowLength, timeUnit);
     }
 
+    // TODO - Think about the approach to refill lazily
     @Override
     public synchronized boolean isAllowed(UserRequest request) {
-        // TODO - Also refill at the beginning
         userTokens.putIfAbsent(request.getUserId(), refillSize);
         int tokens = userTokens.get(request.getUserId());
         if (tokens > 0) {
             tokens--;
-            userTokens.putIfAbsent(request.getUserId(), tokens);
+            userTokens.put(request.getUserId(), tokens);
             return true;
         }
         // TODO - Credits
 /*
-        int credits = userCredits.getOrDefault(request.getUserId(), 0);
-        else if (credits > 0) {
+        else if (userCredits.getOrDefault(request.getUserId(), 0) > 0) {
+            int credits = userCredits.getOrDefault(request.getUserId(), 0);
             credits--;
-            userCredits.putIfAbsent(request.getUserId(), credits);
+            userCredits.put(request.getUserId(), credits);
             return true;
         }
 */
@@ -61,7 +61,7 @@ public class TokenBucketRateLimiter extends RateLimiter implements IRateLimiter 
         for (String user : userTokens.keySet()) {
             int current = userTokens.get(user);
             if (current + refillSize <= bucketSize) {
-                userTokens.put(user, Math.min(bucketSize, current + refillSize));
+                userTokens.put(user, current + refillSize);
             } else {
                 userTokens.put(user, bucketSize);
             // TODO - Credits

@@ -13,9 +13,9 @@ public class RateLimiterFactory {
 
     public static IRateLimiter createWindowRateLimiter(
             RateLimiterType type,
-            int maxAllowedRequests,
             int timeWindowLength,
-            TimeUnit timeUnit
+            TimeUnit timeUnit,
+            int maxAllowedRequests
     ) {
         switch (type) {
             case FIXED_WINDOW:
@@ -29,9 +29,9 @@ public class RateLimiterFactory {
 
     public static IRateLimiter createBucketRateLimiter(
             RateLimiterType type,
-            int bucketSize,
             int timeWindowLength,
             TimeUnit timeUnit,
+            int bucketSize,
             int refillSize, // Used only for token bucket
             int leakRatePerWindow // Used only for leaky bucket
     ) {

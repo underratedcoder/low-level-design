@@ -3,16 +3,15 @@ package com.lld.ratelimiter.service.impl;
 import com.lld.ratelimiter.model.UserRequest;
 import com.lld.ratelimiter.service.IRateLimiter;
 import com.lld.ratelimiter.service.RateLimiter;
+import com.lld.ratelimiter.util.TimeUtil;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 public class SlidingWindowRateLimiter extends RateLimiter implements IRateLimiter {
     private final int maxAllowedRequests;
-    private final Map<String, Deque<Long>> userRequestLogs = new ConcurrentHashMap<>();
+    private final Map<String, Queue<Long>> userRequestLogs = new ConcurrentHashMap<>();
 
     public SlidingWindowRateLimiter(int timeWindowLength, TimeUnit timeUnit, int maxAllowedRequests) {
         super(timeWindowLength, timeUnit);
@@ -21,20 +20,22 @@ public class SlidingWindowRateLimiter extends RateLimiter implements IRateLimite
 
     @Override
     public synchronized boolean isAllowed(UserRequest request) {
-        long currentTime = System.currentTimeMillis();
-        long windowStart = currentTime - timeUnit.toMillis(timeWindowLength);
+        userRequestLogs.putIfAbsent(request.getUserId(), new LinkedList<>());
 
-        userRequestLogs.putIfAbsent(request.getUserId(), new ArrayDeque<>());
-        Deque<Long> timestamps = userRequestLogs.get(request.getUserId());
+        long currentTime = TimeUtil.currTimeInSec();
+        long windowStart = currentTime - timeWindowLength;
 
-        while (!timestamps.isEmpty() && timestamps.peekFirst() < windowStart) {
-            timestamps.pollFirst();
+        Queue<Long> timestamps = userRequestLogs.get(request.getUserId());
+
+        while (!timestamps.isEmpty() && timestamps.peek() < windowStart) {
+            timestamps.poll();
         }
 
         if (timestamps.size() < maxAllowedRequests) {
-            timestamps.offerLast(currentTime);
+            timestamps.offer(currentTime);
             return true;
         }
+
         return false;
     }
 

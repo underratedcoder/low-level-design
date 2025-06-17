@@ -9,8 +9,6 @@ import java.util.Random;
 import java.util.Set;
 
 public class SnakeGame {
-    private int moveNumber;
-
     private final int size;
     private int score;
 
@@ -20,12 +18,9 @@ public class SnakeGame {
     private final Set<Coordinate> unique = new HashSet<>();
 
     private Coordinate foodPosition;
-    private boolean eatFoodInLastStep;
     private boolean gameOver;
 
     public SnakeGame(int size) {
-        this.moveNumber = 0;
-
         this.size = size;
         this.score = 0;
 
@@ -36,16 +31,9 @@ public class SnakeGame {
         unique.add(snakeHead);
 
         generateFood();
-
-        displayBoard();
     }
 
     public void move(Direction newDirection) {
-        if (gameOver) {
-            System.out.println("Game Over! Final Score: " + score);
-            return;
-        }
-
         if (newDirection != null && moveIsInvalid(newDirection)) {
             System.out.println("Illegal Move");
             return;
@@ -83,24 +71,19 @@ public class SnakeGame {
             Coordinate tail = snake.removeFirst();
             unique.remove(tail);
         }
-
-        displayBoard();
     }
 
-    private boolean isSnakeEatFood(Coordinate newHead) {
-        return newHead == foodPosition;
-    }
-
-    private boolean isSnakeDead(Coordinate head) {
-        if (head.getX() < 0 || head.getY() < 0 || head.getX() >= size || head.getY() >= size) {
+    private boolean isSnakeDead(Coordinate newHead) {
+        if (newHead.getX() < 0 || newHead.getY() < 0 || newHead.getX() >= size || newHead.getY() >= size) {
             return true;
-        } else if (unique.contains(head) && head != snake.getFirst()) {
+        } else if (unique.contains(newHead) && newHead != snake.getFirst()) {
             return true;
         } else {
             return false;
         }
     }
 
+    // You can skip this in interview
     private boolean moveIsInvalid(Direction newDirection) {
         return (currentDirection == Direction.LEFT && newDirection == Direction.RIGHT) ||
                 (currentDirection == Direction.RIGHT && newDirection == Direction.LEFT) ||
@@ -138,7 +121,7 @@ public class SnakeGame {
                 } else if (curr.equals(foodPosition)) {
                     System.out.print("F "); // Food
                 } else if (unique.contains(curr)) {
-                    System.out.print("S "); // Snake body
+                    System.out.print("B "); // Snake body
                 } else {
                     System.out.print(". ");
                 }

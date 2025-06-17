@@ -5,10 +5,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Board {
-    private int size;
+    private final int size;
 
-    private Map<Integer, Integer> snakes;
-    private Map<Integer, Integer> ladders;
+    private final Map<Integer, Integer> snakes;
+    private final Map<Integer, Integer> ladders;
 
     public Board(
             int size,

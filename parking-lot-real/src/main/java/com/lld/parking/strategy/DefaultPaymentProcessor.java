@@ -1,6 +1,6 @@
 package com.lld.parking.strategy;
 
-import com.lld.parking.enums.PaymentMethod;
+import com.lld.parking.depth.enums.PaymentMethod;
 
 public class DefaultPaymentProcessor implements PaymentProcessor {
     @Override

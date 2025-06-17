@@ -1,4 +1,5 @@
 package com.lld.router.service;// Router.java
+
 import com.lld.router.enums.HttpMethod;
 import com.lld.router.model.HttpRequest;
 import com.lld.router.model.Response;
@@ -8,6 +9,8 @@ import java.util.*;
 
 public class Router {
     private final RouteTrieNode root = new RouteTrieNode();
+
+    public Router() { }
 
     public void addRoute(HttpMethod method, String path, Handler handler) {
         String[] parts = normalize(path);
@@ -23,11 +26,10 @@ public class Router {
                 paramChild.paramName = part.substring(1);
                 node = paramChild;
             } else if (part.startsWith("*")) {
-                if (node.wildcardChild == null) {
-                    node.wildcardChild = new RouteTrieNode();
-                    node.wildcardChild.paramName = part.substring(1);
-                }
-                node = node.wildcardChild;
+                RouteTrieNode wildcardChildNode = new RouteTrieNode();
+                node.wildcardChild = wildcardChildNode;
+                node.wildcardChild.paramName = part.substring(1);
+                node = wildcardChildNode;
                 break; // wildcard matches the rest of the path
             } else {
                 RouteTrieNode staticChild = node.children.get(part);
@@ -41,7 +43,6 @@ public class Router {
 
         node.handlers.put(method, handler);
     }
-
 
     public Response route(HttpRequest request) {
         Map<String, String> pathParams = new HashMap<>();

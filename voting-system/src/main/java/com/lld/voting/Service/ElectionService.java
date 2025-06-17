@@ -39,6 +39,7 @@ public class ElectionService {
         return true;
     }
 
+    // TODO - we can maintain winner in variable and return it
     public VoteResult getWinner() {
         String winnerId = null;
         int maxVotes = -1;

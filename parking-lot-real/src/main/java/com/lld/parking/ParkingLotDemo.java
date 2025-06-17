@@ -1,12 +1,12 @@
 package com.lld.parking;
 
-import com.lld.parking.enums.ParkingSpotType;
-import com.lld.parking.enums.PaymentMethod;
-import com.lld.parking.model.*;
-import com.lld.parking.model.vehicle.Bike;
-import com.lld.parking.model.vehicle.Car;
-import com.lld.parking.model.vehicle.Vehicle;
-import com.lld.parking.service.ParkingLot;
+import com.lld.parking.depth.enums.ParkingSpotType;
+import com.lld.parking.depth.enums.PaymentMethod;
+import com.lld.parking.depth.model.*;
+import com.lld.parking.depth.model.vehicle.Bike;
+import com.lld.parking.depth.model.vehicle.Car;
+import com.lld.parking.depth.model.vehicle.Vehicle;
+import com.lld.parking.depth.service.ParkingLot;
 import com.lld.parking.strategy.GroundFloorPriorityStrategy;
 import com.lld.parking.strategy.NearestToEntryStrategy;
 

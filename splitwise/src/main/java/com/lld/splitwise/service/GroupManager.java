@@ -51,7 +51,7 @@ public class GroupManager {
         
         // Check if user already in the group
         boolean isMember = group.getMembers().stream()
-                .anyMatch(member -> member.getId().equals(userId));
+                .anyMatch(m -> m.getId().equals(userId));
         
         if (!isMember) {
             group.getMembers().add(member);

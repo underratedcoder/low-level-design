@@ -1,6 +1,6 @@
 package com.lld.parking.strategy;
 
-import com.lld.parking.enums.VehicleType;
+import com.lld.parking.depth.enums.VehicleType;
 
 import java.util.HashMap;
 import java.util.Map;
